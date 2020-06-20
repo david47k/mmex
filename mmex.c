@@ -88,6 +88,7 @@ int dumpResource(FILE * fin, uint32_t offset, uint32_t byteCount, char * filenam
     // Seek to resource position
     if(fseek(fin,offset,SEEK_SET) != 0) {
 		printf("dumpResource: fseek failed\n");
+		fclose(fout);
 		return 1;
     }
 
@@ -99,11 +100,13 @@ int dumpResource(FILE * fin, uint32_t offset, uint32_t byteCount, char * filenam
 
 		if(fread(buf,1,count,fin) != count) {
 			printf("dumpResource: fread failed\n");
+			fclose(fout);
 			return 1;
 		}
 
 		if(fwrite(buf,1,count,fout) != count) {
 			printf("dumpResource: fwrite failed\n");
+			fclose(fout);
 			return 1;
 		}
 		bytesLeft -= count;
